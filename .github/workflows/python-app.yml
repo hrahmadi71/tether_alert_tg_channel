@@ -30,6 +30,6 @@ jobs:
         pip install -r requirements.txt
     - name: Run script
       env:
-        BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         CHANNEL_ID: ${{ vars.CHANNEL_ID }}
       run: python main.py
