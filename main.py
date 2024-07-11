@@ -58,13 +58,13 @@ def alert(bot_token, channel_id):
     average_price = int(sum(prices.values())/ len(prices))
     
     alert_text = '\n'.join(
-        [f'قیمت میانگین: {average_price} تومان', ''] +
+        [f'*میانگین: {average_price} تومان*', ''] +
         [f'{exchange_name}: {price} تومان' for exchange_name, price in prices.items()]
     )
-    
+
     requests.post(
         url=f'https://api.telegram.org/bot{bot_token}/sendMessage',
-        data={'chat_id': channel_id, 'text': alert_text}
+        data={'chat_id': channel_id, 'text': alert_text, 'parse_mode': 'markdown'}
     )
 
 
