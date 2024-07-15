@@ -41,9 +41,9 @@ def get_bitpin_price(response):
     return int(price)
 
 
-@get_price('https://api.tetherland.com/currencies')
+@get_price('https://market.tetherland.com/last_trades')
 def get_tetherland_price(response):
-    price = response['data']['currencies']['USDT']['price']
+    price = response['data'][0]['price']
     return int(price)
 
 
