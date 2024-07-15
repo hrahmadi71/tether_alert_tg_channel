@@ -31,6 +31,16 @@ def get_wallex_price(response):
     return int(float(price))
 
 
+@get_price('https://api.bitpin.ir/v1/mkt/markets/')
+def get_bitpin_price(response):
+    price = None
+    for market in response['results']:
+        if market['code'] == 'USDT_IRT':
+            price = market['price']
+            break
+    return int(price)
+
+
 @get_price('https://api.tetherland.com/currencies')
 def get_tetherland_price(response):
     price = response['data']['currencies']['USDT']['price']
@@ -47,6 +57,7 @@ def alert(bot_token, channel_id):
     prices = {
         'نوبیتکس': get_nobitex_price(),
         'والکس': get_wallex_price(),
+        'بیت‌پین': get_bitpin_price(),
         'تترلند': get_tetherland_price(),
         'تبدیل': get_tabdeal_price(),
     }
