@@ -65,12 +65,23 @@ def alert(bot_token, channel_id):
     for key, value in prices.items():
         if value is None:
             del prices[key]
-            
+    
     average_price = int(sum(prices.values())/ len(prices))
+    
+    postfixes = {
+        'نوبیتکس': '',
+        'والکس': '',
+        'بیت‌پین': '',
+        'تترلند': '',
+        'تبدیل': '',
+    }
+    
+    postfixes[min(prices, key=prices.get)] = '🔽'
+    postfixes[max(prices, key=prices.get)] = '🔼'
     
     alert_text = '\n'.join(
         [f'*میانگین: {average_price} تومان*', ''] +
-        [f'{exchange_name}: {price} تومان' for exchange_name, price in prices.items()]
+        [f'{exchange_name}: {price} تومان {postfixes[exchange_name]}' for exchange_name, price in prices.items()]
     )
 
     requests.post(
