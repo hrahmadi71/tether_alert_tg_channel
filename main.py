@@ -1,6 +1,20 @@
 import requests
 
 
+english_to_persian_dict = {
+    '0': '۰',
+    '1': '۱',
+    '2': '۲',
+    '3': '۳',
+    '4': '۴',
+    '5': '۵',
+    '6': '۶',
+    '7': '۷',
+    '8': '۸',
+    '9': '۹'
+}
+
+
 def get_price(url, method_name='get', payload=None):
     def decorator(func):
         def wrapper(*args, **kwargs):
@@ -83,6 +97,9 @@ def alert(bot_token, channel_id):
         [f'*میانگین: {average_price} تومان*', ''] +
         [f'{exchange_name}: {price} تومان {postfixes[exchange_name]}' for exchange_name, price in prices.items()]
     )
+    
+    for eng_digit, per_digit in english_to_persian_dict.items():
+        alert_text = alert_text.replace(eng_digit, per_digit)
 
     requests.post(
         url=f'https://api.telegram.org/bot{bot_token}/sendMessage',
