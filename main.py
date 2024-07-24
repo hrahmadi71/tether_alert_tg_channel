@@ -93,7 +93,7 @@ def alert(bot_token, channel_id):
         'تبدیل': get_tabdeal_price(),
     }
     
-    for key, value in prices.items():
+    for key, value in prices.copy().items():
         if value is None:
             del prices[key]
     
