@@ -14,6 +14,23 @@ english_to_persian_dict = {
     '9': '۹'
 }
 
+LATEST_PRICE_KEY = 'LATEST_PRICE'
+
+
+def set_latest_price(price: int):
+    with open(os.getenv('GITHUB_ENV'), 'a') as f:
+        f.write(f"{LATEST_PRICE_KEY}={price}\n")
+
+
+def get_latest_price():
+    try:
+        price = os.getenv(LATEST_PRICE_KEY)
+        if price is None:
+            return None
+        return int(price)
+    except ValueError:
+        return None
+
 
 def get_price(url, method_name='get', payload=None):
     def decorator(func):
@@ -82,6 +99,12 @@ def alert(bot_token, channel_id):
     
     average_price = int(sum(prices.values())/ len(prices))
     
+    latest_price = get_latest_price()
+    average_emoji = ''
+    if latest_price is not None:
+        average_emoji = '🔴' if average_price < latest_price else '🟢'
+    set_latest_price(average_price)
+    
     postfixes = {
         'نوبیتکس': '',
         'والکس': '',
@@ -94,7 +117,7 @@ def alert(bot_token, channel_id):
     postfixes[max(prices, key=prices.get)] = '🔼'
     
     alert_text = '\n'.join(
-        [f'*میانگین: {average_price} تومان*', ''] +
+        [f'*میانگین: {average_price} تومان* {average_emoji}', ''] +
         [f'{exchange_name}: {price} تومان {postfixes[exchange_name]}' for exchange_name, price in prices.items()]
     )
     

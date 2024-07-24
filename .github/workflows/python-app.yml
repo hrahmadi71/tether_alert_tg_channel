@@ -9,9 +9,6 @@ on:
     - cron: '*/30 * * * *'
 
 
-permissions:
-  contents: read
-
 jobs:
   run-script:
     runs-on: ubuntu-latest
@@ -30,4 +27,10 @@ jobs:
       env:
         BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         CHANNEL_ID: ${{ vars.CHANNEL_ID }}
+        LATEST_PRICE: ${{ vars.LATEST_PRICE }}
       run: python main.py
+    - name: set latest price variables
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+      run: |
+        gh variable set LATEST_PRICE --body "$LATEST_PRICE"
