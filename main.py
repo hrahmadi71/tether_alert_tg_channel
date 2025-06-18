@@ -35,11 +35,13 @@ def get_latest_price():
 def get_price(url, method_name='get', payload=None):
     def decorator(func):
         def wrapper(*args, **kwargs):
-            response = getattr(requests, method_name)(
-                url,
-                json=payload
-            )
-            if response.status_code != 200:
+            try:
+                response = getattr(requests, method_name)(
+                    url,
+                    json=payload
+                )
+                response.raise_for_status()
+            except:
                 return None
             try:
                 return func(*args, **kwargs, response=response.json())
