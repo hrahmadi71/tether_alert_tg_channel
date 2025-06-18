@@ -45,7 +45,7 @@ def get_price(url, method_name='get', payload=None):
                 return None
             try:
                 return func(*args, **kwargs, response=response.json())
-            except (KeyError, ValueError):
+            except (KeyError, ValueError, IndexError):
                 return None
         return wrapper
     return decorator
