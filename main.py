@@ -51,7 +51,7 @@ def get_price(url, method_name='get', payload=None):
     return decorator
 
 
-@get_price('https://api.nobitex.ir/market/stats', method_name='post',
+@get_price('https://apiv2.nobitex.ir/market/stats', method_name='post',
            payload={"srcCurrency": "usdt", "dstCurrency": "rls"})
 def get_nobitex_price(response):
     price = response['stats']['usdt-rls']['latest'][:-1]
